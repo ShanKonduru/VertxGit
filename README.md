@@ -22,7 +22,7 @@ To use Vert.x we need to add the following Maven dependency in pom.xml:
     <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-core</artifactId>
-        <version>3.4.1</version>
+        <version>4.3.1</version>
     </dependency>
 </dependencies>
 ```
@@ -147,6 +147,54 @@ public class BootstrapVerticle extends AbstractVerticle {
 * under arguments add run BootstrapVerticle
 
 
+## Read Data from Configuration files
+
+* Add necessary dependencies to pom.xml
+```xml
+    <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-config</artifactId>
+        <version>4.3.1</version>
+    </dependency>
+```
+
+* Add data file to your project
+
+let the name of the file is *my-config.hocon*
+```json
+{
+	"DefaultNumberOfInstances" : 3,
+	"DefaultEnableWorker" : false
+}
+```
+
+* Add the following code to read these config entries
+```java
+	// Reading Data From Config file
+	System.out.println("Reading Data From Config file!!!");
+	ConfigStoreOptions fileStore = new ConfigStoreOptions()
+			.setType("file")
+			.setOptional(true)
+			.setConfig(new JsonObject().put("path", "my-config.hocon"));
+	ConfigStoreOptions sysStore = new ConfigStoreOptions()
+			.setType("sys");
+	ConfigRetrieverOptions configRetrieverOptions = new ConfigRetrieverOptions()
+			.addStore(fileStore)
+			.addStore(sysStore);
+	ConfigRetriever configRetriever = ConfigRetriever.create(vertx, configRetrieverOptions);  
+
+	configRetriever.getConfig(json -> {
+		JsonObject config = json.result();
+		setInstances = config.getInteger("DefaultNumberOfInstances");
+		setWorker = config.getBoolean("DefaultEnableWorker");
+	});
+
+	System.out.println("Deploying n instanced of MyVerticle - via DiploymentOptions!!!");
+	DeploymentOptions newDiploymentOptions = new DeploymentOptions();
+	newDiploymentOptions.setInstances(setInstances);
+	newDiploymentOptions.setWorker(setWorker);
+	vertx.deployVerticle("MyVerticle", newDiploymentOptions);
+```
 
 ## Event Bus
 It is the nerve system of any Vert.x application.
