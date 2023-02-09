@@ -41,11 +41,22 @@ Let's create a simple application with a verticle and deploy it using a vertx in
 To create our verticle, we'll extend the io.vertx.core.AbstractVerticle class and override the start() method:
 
 ```java
-public class HelloVerticle extends AbstractVerticle {
-    @Override
-    public void start(Future<Void> future) {
-        System.out.println("Executing HelloVerticle!!!");
-    }
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Future;
+import io.vertx.core.Promise;
+
+public class MyVerticle extends AbstractVerticle {
+
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		System.out.println("In MyVerticle - START!!!");
+	}
+	
+	@Override
+	public void stop(Promise<Void> stopPromise) throws Exception {
+		System.out.println("In MyVerticle - STOP!!!");	
+	}
+
 }
 ```
 The start() method will be invoked by the vertx instance when the verticle is deployed. The method takes io.vertx.core.Future as a parameter, which can be used to discover the status of an asynchronous deployment of the verticle.
@@ -56,39 +67,107 @@ Now let's deploy the verticle: there are multiple ways to deploy a Verticle.
 #### 1. Deployment using Verticle Object
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
-public static void main(String[] args) {
-    System.out.println("About to Deploy HelloVerticle!!!");
-    Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle(new HelloVerticle());
+import io.vertx.config.ConfigRetriever;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+
+public class DeployMyVerticle {
+
+	public static int setInstances;
+	public static boolean setWorker;
+
+	public static void main(String[] args) {
+		System.out.println("In Deploy MyVerticle main!!!");
+		Vertx vertx = Vertx.vertx();
+
+		// Way #1
+		System.out.println("Deploying MyVerticle - new Verticle Instance !!!");
+		vertx.deployVerticle(new MyVerticle());
+	}
 }
 ```
 #### 2. Deployment using fully qualified class path
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
-public static void main(String[] args) {
-    Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle("shan.vertx.HelloVerticle");
+import io.vertx.config.ConfigRetriever;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+
+public class DeployMyVerticle {
+
+	public static int setInstances;
+	public static boolean setWorker;
+
+	public static void main(String[] args) {
+		System.out.println("In Deploy MyVerticle main!!!");
+		Vertx vertx = Vertx.vertx();
+
+		// Way #1
+		System.out.println("Deploying MyVerticle - new Verticle Instance !!!");
+		vertx.deployVerticle("MyVerticle");
+	}
 }
 ```
 
 #### 3. Deployment using class name
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
-public static void main(String[] args) {
-    Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle(HelloVerticle.class.getName());
+import io.vertx.config.ConfigRetriever;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+
+public class DeployMyVerticle {
+
+	public static int setInstances;
+	public static boolean setWorker;
+
+	public static void main(String[] args) {
+		System.out.println("In Deploy MyVerticle main!!!");
+		Vertx vertx = Vertx.vertx();
+
+		// Way #2
+		System.out.println("Deploying MyVerticle - Verticle Class Name!!!");
+		vertx.deployVerticle(MyVerticle.class.getName());
+	}
 }
 ```
 
 #### 4. Deployment using Deployment Options
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
-public static void main(String[] args) {
-    DeploymentOptions deploymentOptions = new DeploymentOptions();
-    deploymentOptions.setInstances(10); // to Deploy 10 instances of this Verticle
-    deploymentOptions.setWorker(false); // Set whether the verticle(s) should be deployed as a worker verticle.
-    Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle(new HelloVerticle(), deploymentOptions);
+import io.vertx.config.ConfigRetriever;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+
+public class DeployMyVerticle {
+
+	public static int setInstances;
+	public static boolean setWorker;
+
+	public static void main(String[] args) {
+		System.out.println("In Deploy MyVerticle main!!!");
+		Vertx vertx = Vertx.vertx();
+
+		// Way #4
+		System.out.println("Deploying 10 instanced of MyVerticle - via
+		DiploymentOptions!!!");
+		DeploymentOptions diploymentOptions = new DeploymentOptions();
+		diploymentOptions.setInstances(10);
+		diploymentOptions.setWorker(false);
+		vertx.deployVerticle("MyVerticle", diploymentOptions);
+	}
 }
 ```
 
@@ -105,37 +184,37 @@ public static void main(String[] args) {
 *Create a Verticle to be Deployed*
 ```java
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Future;
+import io.vertx.core.Promise;
 
 public class MySecondVerticle extends AbstractVerticle {
-
+	
 	@Override
-	public void start(Future<Void> startFuture) throws Exception {
+	public void start(Promise<Void> startPromise) throws Exception {
 		System.out.println("In MySecondVerticle - START!!!");
 	}
-
+	
 	@Override
-	public void stop(Future<Void> stopFuture) throws Exception {
+	public void stop(Promise<Void> stopPromise) throws Exception {
 		System.out.println("In MySecondVerticle - STOP!!!");
 	}
 }
 ```
 *Create another Verticle called BootstrapVerticle* 
  ```java
- import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Future;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
 
 public class BootstrapVerticle extends AbstractVerticle {
-
+	
 	@Override
-	public void start(Future<Void> startFuture) throws Exception {
+	public void start(Promise<Void> startPromise) throws Exception {
 		System.out.println("In BootstrapVerticle - START!!!");
 		System.out.println("Deploying instance of MySecondVerticle.");
 		vertx.deployVerticle(new MySecondVerticle());
 	}
 	
 	@Override
-	public void stop(Future<Void> stopFuture) throws Exception {
+	public void stop(Promise<Void> stopPromise) throws Exception {
 		System.out.println("In BootstrapVerticle - STOP!!!");	
 	}
 }
@@ -170,30 +249,60 @@ let the name of the file is *my-config.hocon*
 
 * Add the following code to read these config entries
 ```java
-	// Reading Data From Config file
-	System.out.println("Reading Data From Config file!!!");
-	ConfigStoreOptions fileStore = new ConfigStoreOptions()
-			.setType("file")
-			.setOptional(true)
-			.setConfig(new JsonObject().put("path", "my-config.hocon"));
-	ConfigStoreOptions sysStore = new ConfigStoreOptions()
-			.setType("sys");
-	ConfigRetrieverOptions configRetrieverOptions = new ConfigRetrieverOptions()
-			.addStore(fileStore)
-			.addStore(sysStore);
-	ConfigRetriever configRetriever = ConfigRetriever.create(vertx, configRetrieverOptions);  
+import io.vertx.config.ConfigRetriever;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
 
-	configRetriever.getConfig(json -> {
-		JsonObject config = json.result();
-		setInstances = config.getInteger("DefaultNumberOfInstances");
-		setWorker = config.getBoolean("DefaultEnableWorker");
-	});
+public class DeployMyVerticle {
 
-	System.out.println("Deploying n instanced of MyVerticle - via DiploymentOptions!!!");
-	DeploymentOptions newDiploymentOptions = new DeploymentOptions();
-	newDiploymentOptions.setInstances(setInstances);
-	newDiploymentOptions.setWorker(setWorker);
-	vertx.deployVerticle(new MyVerticle(), newDiploymentOptions);
+	public static int setInstances;
+	public static boolean setWorker;
+
+	public static void main(String[] args) {
+		System.out.println("In Deploy MyVerticle main!!!");
+		Vertx vertx = Vertx.vertx();
+		
+		// Reading Data From Config file
+		System.out.println("Reading Data From Config file!!!");
+
+		System.out.println("buildng File ConfigStoreOptions !!!");
+		ConfigStoreOptions fileStore = new ConfigStoreOptions().setType("file").setOptional(true)
+				.setConfig(new JsonObject().put("path",
+						"./my-config.hocon"));
+
+		System.out.println("buildng Sys ConfigStoreOptions  !!!");
+		ConfigStoreOptions sysStore = new ConfigStoreOptions().setType("sys");
+
+		System.out.println("buildng ConfigStoreOptions  !!!");
+		ConfigRetrieverOptions configRetrieverOptions = new ConfigRetrieverOptions().addStore(fileStore)
+				.addStore(sysStore);
+		
+		ConfigRetriever configRetriever = null;
+		try {
+			System.out.println("buildng ConfigRetriever!!!");
+			configRetriever = ConfigRetriever.create(vertx, configRetrieverOptions);
+		} catch (Exception ex) {
+			System.out.println("getMessage::" + ex.getMessage());
+			System.out.println("getStackTrace::" + ex.getStackTrace().toString());
+		}
+
+		System.out.println("Reading Config data using ConfigRetriever!!!");
+		configRetriever.getConfig(json -> {
+			JsonObject config = json.result();
+			setInstances = config.getInteger("DefaultNumberOfInstances");
+			setWorker = config.getBoolean("DefaultEnableWorker");
+		});
+
+		System.out.println("Deploying n instanced of MyVerticle - via DiploymentOptions!!!");
+		DeploymentOptions newDiploymentOptions = new DeploymentOptions();
+		newDiploymentOptions.setInstances(setInstances);
+		newDiploymentOptions.setWorker(setWorker);
+		vertx.deployVerticle(new MyVerticle(), newDiploymentOptions);
+	}
+}
 ```
 
 ## Event Bus
