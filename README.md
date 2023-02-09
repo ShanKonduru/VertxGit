@@ -312,6 +312,106 @@ Being reactive, verticles remain dormant until they receive a message or event. 
 
 Message handling is ideally asynchronous, messages are queued to the event bus, and control is returned to the sender. Later it's dequeued to the listening verticle. The response is sent using Future and callback methods.
 
+### Steps tp follow 
+* Create a Producer Verticle
+* Create a Consumer Verticle - call it Consumer One Verticle
+* Create another Consumer Verticle - call it Consumer Two Verticle
+* Create Boot Strap Verticle
+* Configure Bootstrap in Run Configuration
+
+**Create a Producer Verticle**
+```java
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
+
+public class ProducerVerticle extends AbstractVerticle {
+
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		System.out.println("In ProducerVerticle - START!!!");
+	}
+	
+	@Override
+	public void stop(Promise<Void> stopPromise) throws Exception {
+		System.out.println("In ProducerVerticle - STOP!!!");	
+	}
+
+}
+```
+**Create a Consumer Verticle - call it Consumer One Verticle**
+```java
+
+
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Future;
+import io.vertx.core.Promise;
+
+public class ConsumerOneVerticle extends AbstractVerticle {
+
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		System.out.println("In ConsumerOneVerticle - START!!!");
+	}
+	
+	@Override
+	public void stop(Promise<Void> stopPromise) throws Exception {
+		System.out.println("In ConsumerOneVerticle - STOP!!!");	
+	}
+}
+```
+
+**Create another Consumer Verticle - call it Consumer Two Verticle**
+```java
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
+
+public class ConsumerTwoVerticle extends AbstractVerticle {
+
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		System.out.println("In ConsumerTwoVerticle - START!!!");
+	}
+	
+	@Override
+	public void stop(Promise<Void> stopPromise) throws Exception {
+		System.out.println("In ConsumerTwoVerticle - STOP!!!");	
+	}
+}
+```
+
+**Create Boot Strap Verticle**
+```java
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
+
+public class BootstrapProdConsVerticle extends AbstractVerticle {
+	
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		System.out.println("In BootstrapVerticle - START!!!");
+		
+		System.out.println("Deploying instance of ProducerVerticle.");
+		vertx.deployVerticle(new ProducerVerticle());
+		
+		System.out.println("Deploying instance of ConsumerOneVerticle.");
+		vertx.deployVerticle(new ConsumerOneVerticle());
+
+		System.out.println("Deploying instance of ConsumerTwoVerticle.");
+		vertx.deployVerticle(new ConsumerTwoVerticle());
+	}
+	
+	@Override
+	public void stop(Promise<Void> stopPromise) throws Exception {
+		System.out.println("In BootstrapVerticle - STOP!!!");	
+	}
+}
+
+```
+
+**Configure Bootstrap in Run Configuration**
+```java
+```
+
 ## HTTP Server
 
 Now let's spin up an HTTP server using a verticle:
