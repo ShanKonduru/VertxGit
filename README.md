@@ -338,6 +338,8 @@ Conceptually, publish uses the publish/subscribe pattern whereas send uses the r
 ```java
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.json.JsonObject;
 
 public class ProducerVerticle extends AbstractVerticle {
 
@@ -362,22 +364,26 @@ public class ProducerVerticle extends AbstractVerticle {
 	public void stop(Promise<Void> stopPromise) throws Exception {
 		System.out.println("In ProducerVerticle - STOP!!!");	
 	}
-
 }
 ```
 **Create a Consumer Verticle - call it Consumer One Verticle**
 ```java
-
-
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
+import io.vertx.core.json.JsonObject;
 
 public class ConsumerOneVerticle extends AbstractVerticle {
 
 	@Override
 	public void start(Promise<Void> startPromise) throws Exception {
 		System.out.println("In ConsumerOneVerticle - START!!!");
+		vertx.eventBus().consumer("SportsTopic", message ->{
+			System.out.println("received message from Producer :" + message.body());
+			JsonObject reply = new JsonObject();
+			reply.put("message", "This is Consumer One - Received your message");
+			message.reply(reply);
+		});
 	}
 	
 	@Override
