@@ -53,7 +53,7 @@ The start() method will be invoked by the vertx instance when the verticle is de
 ### Deployment of Vert.x Applications
 Now let's deploy the verticle: there are multiple ways to deploy a Verticle.
 
-#### Deployment using Verticle Object
+#### 1. Deployment using Verticle Object
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 public static void main(String[] args) {
@@ -62,7 +62,7 @@ public static void main(String[] args) {
     vertx.deployVerticle(new HelloVerticle());
 }
 ```
-#### Deployment using fully qualified class path
+#### 2. Deployment using fully qualified class path
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 public static void main(String[] args) {
@@ -71,7 +71,7 @@ public static void main(String[] args) {
 }
 ```
 
-#### Deployment using class name
+#### 3. Deployment using class name
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 public static void main(String[] args) {
@@ -80,7 +80,7 @@ public static void main(String[] args) {
 }
 ```
 
-#### Deployment using Deployment Options
+#### 4. Deployment using Deployment Options
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 public static void main(String[] args) {
@@ -92,13 +92,61 @@ public static void main(String[] args) {
 }
 ```
 
-Similarly, we can override the stop() method from the AbstractVerticle class, which will be invoked while shutting down the verticle:
+#### 5. Deployment using Bootstrap Verticle
+
+##### Steps to follow
+* Create a Verticle to be Deployed 
+* Create another Verticle called BootstrapVerticle 
+* Implement Necessary Deployment Code
+* Add Bootstrap in run configuration 
+
+<code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
+
+*Create a Verticle to be Deployed*
 ```java
-@Override
-public void stop() {
-    // System.out.println("Shutting down application!!!");
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Future;
+
+public class MySecondVerticle extends AbstractVerticle {
+
+	@Override
+	public void start(Future<Void> startFuture) throws Exception {
+		System.out.println("In MySecondVerticle - START!!!");
+	}
+
+	@Override
+	public void stop(Future<Void> stopFuture) throws Exception {
+		System.out.println("In MySecondVerticle - STOP!!!");
+	}
 }
 ```
+*Create another Verticle called BootstrapVerticle* 
+ ```java
+ import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Future;
+
+public class BootstrapVerticle extends AbstractVerticle {
+
+	@Override
+	public void start(Future<Void> startFuture) throws Exception {
+		System.out.println("In BootstrapVerticle - START!!!");
+		System.out.println("Deploying instance of MySecondVerticle.");
+		vertx.deployVerticle(new MySecondVerticle());
+	}
+	
+	@Override
+	public void stop(Future<Void> stopFuture) throws Exception {
+		System.out.println("In BootstrapVerticle - STOP!!!");	
+	}
+}
+ ```
+
+*Add Bootstrap in run configuration*
+
+* provide  io.vertx.core.Launcher under main class
+* under arguments add run BootstrapVerticle
+
+
 
 ## Event Bus
 It is the nerve system of any Vert.x application.
