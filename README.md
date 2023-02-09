@@ -22,7 +22,7 @@ To use Vert.x we need to add the following Maven dependency in pom.xml:
     <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-core</artifactId>
-        <version>4.3.1</version>
+        <version>4.3.8</version>
     </dependency>
 </dependencies>
 ```
@@ -154,7 +154,7 @@ public class BootstrapVerticle extends AbstractVerticle {
     <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-config</artifactId>
-        <version>4.3.1</version>
+        <version>4.3.8</version>
     </dependency>
 ```
 
@@ -193,7 +193,7 @@ let the name of the file is *my-config.hocon*
 	DeploymentOptions newDiploymentOptions = new DeploymentOptions();
 	newDiploymentOptions.setInstances(setInstances);
 	newDiploymentOptions.setWorker(setWorker);
-	vertx.deployVerticle("MyVerticle", newDiploymentOptions);
+	vertx.deployVerticle(new MyVerticle(), newDiploymentOptions);
 ```
 
 ## Event Bus
