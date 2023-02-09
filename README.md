@@ -390,14 +390,19 @@ public class BootstrapProdConsVerticle extends AbstractVerticle {
 	public void start(Promise<Void> startPromise) throws Exception {
 		System.out.println("In BootstrapVerticle - START!!!");
 		
+		System.out.println("Deploying 10 instances of ProducerVerticle ConsumerOneVerticle, ConsumerTwoVerticle- via DiploymentOptions!!!");
+		DeploymentOptions diploymentOptions = new DeploymentOptions();
+		diploymentOptions.setInstances(1);
+		diploymentOptions.setWorker(false);
+		
 		System.out.println("Deploying instance of ProducerVerticle.");
-		vertx.deployVerticle(new ProducerVerticle());
+		vertx.deployVerticle(new ProducerVerticle(), diploymentOptions);
 		
 		System.out.println("Deploying instance of ConsumerOneVerticle.");
-		vertx.deployVerticle(new ConsumerOneVerticle());
+		vertx.deployVerticle(new ConsumerOneVerticle(), diploymentOptions);
 
 		System.out.println("Deploying instance of ConsumerTwoVerticle.");
-		vertx.deployVerticle(new ConsumerTwoVerticle());
+		vertx.deployVerticle(new ConsumerTwoVerticle(), diploymentOptions);
 	}
 	
 	@Override
