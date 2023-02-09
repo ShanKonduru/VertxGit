@@ -181,7 +181,7 @@ public class DeployMyVerticle {
 
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 
-*Create a Verticle to be Deployed*
+**Create a Verticle to be Deployed**
 ```java
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -199,7 +199,7 @@ public class MySecondVerticle extends AbstractVerticle {
 	}
 }
 ```
-*Create another Verticle called BootstrapVerticle* 
+**Create another Verticle called BootstrapVerticle**
  ```java
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -220,7 +220,7 @@ public class BootstrapVerticle extends AbstractVerticle {
 }
  ```
 
-*Add Bootstrap in run configuration*
+**Add Bootstrap in run configuration**
 
 * provide  io.vertx.core.Launcher under main class
 * under arguments add run BootstrapVerticle
@@ -228,7 +228,7 @@ public class BootstrapVerticle extends AbstractVerticle {
 
 ## Read Data from Configuration files
 
-* Add necessary dependencies to pom.xml
+**Add necessary dependencies to pom.xml**
 ```xml
     <dependency>
         <groupId>io.vertx</groupId>
@@ -237,7 +237,7 @@ public class BootstrapVerticle extends AbstractVerticle {
     </dependency>
 ```
 
-* Add data file to your project
+**Add data file to your project**
 
 let the name of the file is *my-config.hocon*
 ```json
@@ -247,7 +247,7 @@ let the name of the file is *my-config.hocon*
 }
 ```
 
-* Add the following code to read these config entries
+**Add the following code to read these config entries**
 ```java
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
@@ -312,7 +312,7 @@ Being reactive, verticles remain dormant until they receive a message or event. 
 
 Message handling is ideally asynchronous, messages are queued to the event bus, and control is returned to the sender. Later it's dequeued to the listening verticle. The response is sent using Future and callback methods.
 
-### Steps tp follow 
+### Steps to follow 
 * Create a Producer Verticle
 * Create a Consumer Verticle - call it Consumer One Verticle
 * Create another Consumer Verticle - call it Consumer Two Verticle
