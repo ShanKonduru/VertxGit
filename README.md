@@ -344,6 +344,18 @@ public class ProducerVerticle extends AbstractVerticle {
 	@Override
 	public void start(Promise<Void> startPromise) throws Exception {
 		System.out.println("In ProducerVerticle - START!!!");
+		JsonObject message = new JsonObject();
+		message.put("Name", "Value");
+		
+		EventBus bus = vertx.eventBus().send("SportsTopic", message, handler -> {
+			if(handler.succeeded()) {
+				System.out.println("Great!!! Got the acknowledgement from Consumer.");
+				System.out.println("The Message is " + handler.result().body());
+			}
+			else {
+				System.out.println("Offooo!!! Failed to Deliver message.");
+			}
+		});
 	}
 	
 	@Override
