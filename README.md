@@ -315,7 +315,6 @@ Message handling is ideally asynchronous, messages are queued to the event bus, 
 ### Steps to follow 
 * Create a Producer Verticle
 * Create a Consumer Verticle - call it Consumer One Verticle
-* Create another Consumer Verticle - call it Consumer Two Verticle
 * Create Boot Strap Verticle
 * Configure Bootstrap in Run Configuration
 
@@ -360,25 +359,6 @@ public class ConsumerOneVerticle extends AbstractVerticle {
 }
 ```
 
-**Create another Consumer Verticle - call it Consumer Two Verticle**
-```java
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
-
-public class ConsumerTwoVerticle extends AbstractVerticle {
-
-	@Override
-	public void start(Promise<Void> startPromise) throws Exception {
-		System.out.println("In ConsumerTwoVerticle - START!!!");
-	}
-	
-	@Override
-	public void stop(Promise<Void> stopPromise) throws Exception {
-		System.out.println("In ConsumerTwoVerticle - STOP!!!");	
-	}
-}
-```
-
 **Create Boot Strap Verticle**
 ```java
 import io.vertx.core.AbstractVerticle;
@@ -400,9 +380,6 @@ public class BootstrapProdConsVerticle extends AbstractVerticle {
 		
 		System.out.println("Deploying instance of ConsumerOneVerticle.");
 		vertx.deployVerticle(new ConsumerOneVerticle(), diploymentOptions);
-
-		System.out.println("Deploying instance of ConsumerTwoVerticle.");
-		vertx.deployVerticle(new ConsumerTwoVerticle(), diploymentOptions);
 	}
 	
 	@Override
