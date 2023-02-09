@@ -312,6 +312,22 @@ Being reactive, verticles remain dormant until they receive a message or event. 
 
 Message handling is ideally asynchronous, messages are queued to the event bus, and control is returned to the sender. Later it's dequeued to the listening verticle. The response is sent using Future and callback methods.
 
+Both send and publish are used to send a message to an event bus address. However there are some differences between the two.
+
+By using publish:
+* A message is sent to one or multiple listeners
+* All handlers listening against the address will be notified
+* No answer is expected from handlers
+
+By using send:
+* A message is sent to one and only one handler registered against the event bus address.
+* If multiple handlers are registered, only one will be notified. The receiver will be selected by a "round-robin algorithm" as per the docs.
+* The receiver can answer the message, this answer can be empty or contain a response body. A response timeout can also be specified.
+
+In practical usage, publish is quite useful to inform that an event has occured, whereas send is quite handy for asking a treatment where the response matters.
+
+Conceptually, publish uses the publish/subscribe pattern whereas send uses the request/response pattern.
+
 ### Steps to follow 
 * Create a Producer Verticle
 * Create a Consumer Verticle - call it Consumer One Verticle
