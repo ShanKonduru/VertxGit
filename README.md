@@ -54,6 +54,7 @@ The start() method will be invoked by the vertx instance when the verticle is de
 Now let's deploy the verticle: there are multiple ways to deploy a Verticle.
 
 #### Deployment using Verticle Object
+<code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 public static void main(String[] args) {
     System.out.println("About to Deploy HelloVerticle!!!");
@@ -62,6 +63,7 @@ public static void main(String[] args) {
 }
 ```
 #### Deployment using fully qualified class path
+<code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 public static void main(String[] args) {
     Vertx vertx = Vertx.vertx();
@@ -70,6 +72,7 @@ public static void main(String[] args) {
 ```
 
 #### Deployment using class name
+<code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 public static void main(String[] args) {
     Vertx vertx = Vertx.vertx();
@@ -78,6 +81,7 @@ public static void main(String[] args) {
 ```
 
 #### Deployment using Deployment Options
+<code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 public static void main(String[] args) {
     DeploymentOptions deploymentOptions = new DeploymentOptions();
