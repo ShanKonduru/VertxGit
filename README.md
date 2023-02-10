@@ -624,99 +624,107 @@ We have a second parameter to the deployVerticle() method, testContext.asyncAsse
 
 ## RESTful WebService 
 
-We have created an HTTP server, lets now use that to host an RESTfull WebService. In order do so we will need another Vert.x module called vertx-web. This gives a lot of additional features for web development on top of vertx-core.
+# Manually Test your REST Service
 
-Let's add the dependency to our pom.xml:
-```xml
-<dependency>
-    <groupId>io.vertx</groupId>
-    <artifactId>vertx-web</artifactId>
-    <version>3.4.1</version>
-</dependency>
+## Manually Test GET List of Products
+After Running the REST Service program, launch web browser and tyoe the following URL.
+```url
+http://localhost:8888/products
+```
+You would get the following output.
+```json
+[ {
+  "id" : "prod7340",
+  "name" : "Tea Cosy",
+  "price" : 5.99,
+  "weight" : 100
+}, {
+  "id" : "prod3568",
+  "name" : "Egg Whisk",
+  "price" : 3.99,
+  "weight" : 150
+}, {
+  "id" : "prod8643",
+  "name" : "Spatula",
+  "price" : 1.0,
+  "weight" : 80
+} ]
+```
+## Manually Test GET One Product by Product
+After testing get all products, lets try to get individual product details. 
+to get it use the following URLs.
+```url
+http://localhost:8888/products/prod7340
 ```
 
-### Router and Routes
-Let's create a router for our WebService. This router will take a simple route of GET method, and handler method getArtilces():
-```java
-Router router = Router.router(vertx);
-router.get("/api/baeldung/articles/article/:id")
-  .handler(this::getArticles);
-```
-The getArticle() method is a simple method that returns new Article object:
-```java
-private void getArticles(RoutingContext routingContext) {
-    String articleId = routingContext.request()
-      .getParam("id");
-    Article article = new Article(articleId, 
-      "This is an intro to vertx", "baeldung", "01-02-2017", 1578);
-    routingContext.response()
-      .putHeader("content-type", "application/json")
-      .setStatusCode(200)
-      .end(Json.encodePrettily(article));
+the output would be
+```json
+{
+  "id" : "prod7340",
+  "name" : "Tea Cosy",
+  "price" : 5.99,
+  "weight" : 100
 }
 ```
-A Router, when receives a request, looks for the matching route, and passes the request further. The routes having a handler method associated with it to do sumthing with the request.
-
-In our case, the handler invokes the getArticle() method. It receives the routingContext object as an argument. Derives the path parameter id, and creates an Article object with it.
-
-In the last part of the method, let's invoke the response() method on the routingContext object and put the headers, set the HTTP response code, and end the response using the JSON encoded article object.
-
-### Adding Router to Server
-Now let's add the router, created in the previous section to the HTTP server:
-```java
-vertx.createHttpServer()
-  .requestHandler(router::accept)
-  .listen(config().getInteger("http.port", 8080), 
-    result -> {
-      if (result.succeeded()) {
-          future.complete();
-      } else {
-          future.fail(result.cause());
-      }
-});
+for the following URL
+```url
+http://localhost:8888/products/prod3568
 ```
-Notice that we have added requestHandler(router::accept) to the server. This instructs the server, to invoke the accept() of the router object when any request is received.
-
-Now let's test our WebService:
-```java
-@Test
-public void givenId_whenReceivedArticle_thenSuccess(TestContext testContext) {
-    Async async = testContext.async();
-
-    vertx.createHttpClient()
-      .getNow(8080, "localhost", "/api/baeldung/articles/article/12345", 
-        response -> {
-            response.handler(responseBody -> {
-            testContext.assertTrue(
-              responseBody.toString().contains("\"id\" : \"12345\""));
-            async.complete();
-        });
-      });
+the output would be 
+```json
+{
+  "id" : "prod3568",
+  "name" : "Egg Whisk",
+  "price" : 3.99,
+  "weight" : 150
 }
 ```
-## Packaging Vert.x Application
-To package the application as a deployable Java Archive (.jar) let's use Maven Shade plugin and the configurations in the execution tag:
-```xml
-<configuration>
-    <transformers>
-        <transformer 
-          implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-            <manifestEntries>
-                <Main-Class>io.vertx.core.Starter</Main-Class>
-                <Main-Verticle>com.baeldung.SimpleServerVerticle</Main-Verticle>
-            </manifestEntries>
-        </transformer>
-    </transformers>
-    <artifactSet />
-    <outputFile>
-        ${project.build.directory}/${project.artifactId}-${project.version}-app.jar
-    </outputFile>
-</configuration>
+when use the following URL
+```url
+http://localhost:8888/products/prod8643
 ```
-In the manifestEntries, Main-Verticle indicates the starting point of the application and the Main-Class is a Vert.x class which, creates the vertx instance and deploys the Main-Verticle.
+the output would be 
+```json
+{
+  "id" : "prod8643",
+  "name" : "Spatula",
+  "price" : 1.0,
+  "weight" : 80
+}
+```
 
-## Conclusion
+## To Add a New Product, you could  use postman
+PUT
+```url
+http://localhost:8888/products/prod888
+```
+use the following json as request body, with this a new product gets added with ID: prod8888 into the system. 
+```json
+{
+  "id" : "prod8888",
+  "name" : "Tea Cup",
+  "price" : 2.99,
+  "weight" : 100
+}
+```
 
-In this introductory article, we discussed the Vert.x toolkit and its fundamental concepts. Saw how to create and HTTP server, with Vert.x and also an RESTFull WebService and showed how to test them using vertx-unit.
+to see if the newly added product is added or not, you could call get all products or get individual product URL and test it out.
 
-Finally packaged the application as an executable jar.
+use the following URL in the browser for the same.
+```url
+http://localhost:8888/products
+```
+or use the following url in the browser.
+```url
+http://localhost:8888/products/prod8888
+```
+the output would be 
+```json
+{
+  "id" : "prod8888",
+  "name" : "Tea Cup",
+  "price" : 2.99,
+  "weight" : 100
+}
+```
+
