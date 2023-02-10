@@ -427,6 +427,72 @@ public class BootstrapProdConsVerticle extends AbstractVerticle {
 **Configure Bootstrap in Run Configuration**
 ```java
 ```
+## Timers  Handlers
+
+### Types of Timers 
+
+* Delayed Timers - One time execution
+* Recursive Timers - Periodic execution with intervals 
+
+**Delayed Timers - One time execution**
+```java
+import java.util.Random;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
+
+public class HeatSensorVerticle extends AbstractVerticle {
+	private double heat = 20;
+	private final Random rand = new Random();
+
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		System.out.println("In HeatSensorVerticle Start");
+
+		vertx.setTimer(5000, this::DealyedTimerUpdateHeat);
+				
+		startPromise.complete();
+	}
+
+	@Override
+	public void stop(Promise<Void> stopPromise) throws Exception {
+		System.out.println("In HeatSensorVerticle Stop");
+	}
+
+	private void DealyedTimerUpdateHeat(Long id) {
+		heat = heat + rand.nextGaussian() / 2.0d;
+		System.out.println("Inside DealyedTimerUpdateHeat Temperature read from Sensor :" + heat);
+	}
+}
+```
+**Recursive Timers - Periodic execution with intervals**
+```java
+import java.util.Random;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
+
+public class HeatSensorVerticle extends AbstractVerticle {
+	private double heat = 20;
+	private final Random rand = new Random();
+
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		System.out.println("In HeatSensorVerticle Start");
+	
+		vertx.setPeriodic(2000, handler -> {
+			heat = heat + rand.nextGaussian() / 2.0d;
+			System.out.println("Temperature read from Sensor :" + heat);
+		});
+		
+		startPromise.complete();
+	}
+
+	@Override
+	public void stop(Promise<Void> stopPromise) throws Exception {
+		System.out.println("In HeatSensorVerticle Stop");
+	}
+}
+
+```
 
 ## HTTP Server
 
