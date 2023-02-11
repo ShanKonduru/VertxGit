@@ -616,61 +616,49 @@ public class MyHttpServer extends AbstractVerticle {
 	}
 }
 ```
-
 We have overridden the start() method to create an HTTP server and attached a request handler to it. The requestHandler() method is called every time the server receives a request.
 
 Finally, the server is bound to a port, and an AsyncResult<HttpServer> handler is passed to the listen() method whether or not the connection or the server startup is succeeded using future.complete() or future.fail() in the case of any errors.
 
 Note that: config.getInteger() method, is reading the value for HTTP port configuration which is being loaded from an external conf.json file.
 
-Let's test our server:
+Now let's produce JSON object as a response in an HTTP server using a verticle:
 ```java
-@Test
-public void whenReceivedResponse_thenSuccess(TestContext testContext) {
-    Async async = testContext.async();
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
 
-    vertx.createHttpClient()
-      .getNow(port, "localhost", "/", response -> {
-        response.handler(responseBody -> {
-          testContext.assertTrue(responseBody.toString().contains("Hello"));
-          async.complete();
-        });
-      });
-}
-```
-For the test, let's use vertx-unit along with JUnit.:
-```xml
-<dependency>
-    <groupId>io.vertx</groupId>
-    <artifactId>vertx-unit</artifactId>
-    <version>3.4.1</version>
-    <scope>test</scope>
-</dependency>
-```
-We can get the latest version here.
+public class MyHttpServerJsonExample extends AbstractVerticle {
 
-The verticle is deployed and in a vertx instance in the setup() method of the unit test:
-```java
-@Before
-public void setup(TestContext testContext) {
-    vertx = Vertx.vertx();
+	public static void main(String[] args) {
+		System.out.println("In Main MyHttpServerJsonExample - Deploying MyHttpServerJsonExample");
+		Vertx vertx = Vertx.vertx();
+		vertx.deployVerticle(new MyHttpServerJsonExample(), new DeploymentOptions().setInstances(1).setWorker(false));
+	}
 
-    vertx.deployVerticle(SimpleServerVerticle.class.getName(), 
-      testContext.asyncAssertSuccess());
-}
-```
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		System.out.println("In MyHttpServerJsonExample Start");
+		vertx.createHttpServer()
+        .requestHandler(req -> {
+            JsonObject json = new JsonObject()
+                .put("message", "hello there!!!");
+           req.response()
+                .putHeader("Content-Type", "application/json; charset=UTF8")
+                .end(json.encodePrettily());
+        })
+        .listen(8899);
+	}
 
-Similarly, the vertx instance is closed in the @AfterClass tearDown() method:
-```java
-@After
-public void tearDown(TestContext testContext) {
-    vertx.close(testContext.asyncAssertSuccess());
+	@Override
+	public void stop(Promise<Void> stopPromise) throws Exception {
+		System.out.println("In MyHttpServerJsonExample Stop");	
+	}
 }
 ```
 
-Notice that the @BeforeClass setup() method takes an TestContext argument. This helps up in controlling and testing the asynchronous behavior of the test. For example, the verticle deployment is async, so basically we can't test anything unless it's deployed correctly.
-
-We have a second parameter to the deployVerticle() method, testContext.asyncAssertSuccess(). This is used to know if the server is deployed correctly or any failures occurred. It waits for the future.complete() or future.fail() in the server verticle to be called. In the case of a failure, it fails the test.
 
 ## RESTful WebService 
 
