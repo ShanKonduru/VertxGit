@@ -64,58 +64,35 @@ The start() method will be invoked by the vertx instance when the verticle is de
 ### Deployment of Vert.x Applications
 Now let's deploy the verticle: there are multiple ways to deploy a Verticle.
 
-#### 1. Deployment using Verticle Object
+#### 1. Deployment using Main method inside Verticle class
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
-import io.vertx.config.ConfigRetriever;
-import io.vertx.config.ConfigRetrieverOptions;
-import io.vertx.config.ConfigStoreOptions;
+import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
 
-public class DeployMyVerticle {
-
-	public static int setInstances;
-	public static boolean setWorker;
-
+public class SecondVerticle extends AbstractVerticle {
+	
 	public static void main(String[] args) {
-		System.out.println("In Deploy MyVerticle main!!!");
+		System.out.println("In Main SecondVerticle - Deploying SecondVerticle");
 		Vertx vertx = Vertx.vertx();
-
-		// Way #1
-		System.out.println("Deploying MyVerticle - new Verticle Instance !!!");
-		vertx.deployVerticle(new MyVerticle());
+		vertx.deployVerticle(new SecondVerticle(), new DeploymentOptions().setInstances(1).setWorker(false));
 	}
-}
-```
-#### 2. Deployment using fully qualified class path
-<code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
-```java
-import io.vertx.config.ConfigRetriever;
-import io.vertx.config.ConfigRetrieverOptions;
-import io.vertx.config.ConfigStoreOptions;
-import io.vertx.core.DeploymentOptions;
-import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
 
-public class DeployMyVerticle {
-
-	public static int setInstances;
-	public static boolean setWorker;
-
-	public static void main(String[] args) {
-		System.out.println("In Deploy MyVerticle main!!!");
-		Vertx vertx = Vertx.vertx();
-
-		// Way #1
-		System.out.println("Deploying MyVerticle - new Verticle Instance !!!");
-		vertx.deployVerticle("MyVerticle");
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		System.out.println("In SecondVerticle Start");
+	}
+	
+	@Override
+	public void stop(Promise<Void> stopPromise) throws Exception {
+		System.out.println("In SecondVerticle Stop");	
 	}
 }
 ```
 
-#### 3. Deployment using class name
+#### 2. Deployment using Verticle Object
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 import io.vertx.config.ConfigRetriever;
@@ -135,13 +112,38 @@ public class DeployMyVerticle {
 		Vertx vertx = Vertx.vertx();
 
 		// Way #2
-		System.out.println("Deploying MyVerticle - Verticle Class Name!!!");
-		vertx.deployVerticle(MyVerticle.class.getName());
+		System.out.println("Deploying MyVerticle - new Verticle Instance !!!");
+		vertx.deployVerticle(new MyVerticle());
+	}
+}
+```
+#### 3. Deployment using fully qualified class path
+<code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
+```java
+import io.vertx.config.ConfigRetriever;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+
+public class DeployMyVerticle {
+
+	public static int setInstances;
+	public static boolean setWorker;
+
+	public static void main(String[] args) {
+		System.out.println("In Deploy MyVerticle main!!!");
+		Vertx vertx = Vertx.vertx();
+
+		// Way #3
+		System.out.println("Deploying MyVerticle - new Verticle Instance !!!");
+		vertx.deployVerticle("MyVerticle");
 	}
 }
 ```
 
-#### 4. Deployment using Deployment Options
+#### 4. Deployment using class name
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 import io.vertx.config.ConfigRetriever;
@@ -161,6 +163,32 @@ public class DeployMyVerticle {
 		Vertx vertx = Vertx.vertx();
 
 		// Way #4
+		System.out.println("Deploying MyVerticle - Verticle Class Name!!!");
+		vertx.deployVerticle(MyVerticle.class.getName());
+	}
+}
+```
+
+#### 5. Deployment using Deployment Options
+<code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
+```java
+import io.vertx.config.ConfigRetriever;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+
+public class DeployMyVerticle {
+
+	public static int setInstances;
+	public static boolean setWorker;
+
+	public static void main(String[] args) {
+		System.out.println("In Deploy MyVerticle main!!!");
+		Vertx vertx = Vertx.vertx();
+
+		// Way #5
 		System.out.println("Deploying 10 instanced of MyVerticle - via
 		DiploymentOptions!!!");
 		DeploymentOptions diploymentOptions = new DeploymentOptions();
@@ -171,7 +199,7 @@ public class DeployMyVerticle {
 }
 ```
 
-#### 5. Deployment using Bootstrap Verticle
+#### 6. Deployment using Bootstrap Verticle
 
 ##### Steps to follow
 * Create a Verticle to be Deployed 
