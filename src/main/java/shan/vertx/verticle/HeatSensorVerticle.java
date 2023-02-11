@@ -17,6 +17,7 @@ public class HeatSensorVerticle extends AbstractVerticle {
 
 		vertx.setTimer(5000, this::DealyedTimerUpdateHeat);
 		heat = GetTempFromSensor();
+		
 		vertx.setPeriodic(2000, handler -> {
 			System.out.println("Temperature read from Sensor :" + heat);
 		});
