@@ -577,7 +577,7 @@ public class DeployVertcle {
 
 ## HTTP Server
 
-Now let's spin up an HTTP server using a verticle:
+### Now let's spin up an HTTP server using a verticle:
 ```java
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
@@ -622,7 +622,9 @@ Finally, the server is bound to a port, and an AsyncResult<HttpServer> handler i
 
 Note that: config.getInteger() method, is reading the value for HTTP port configuration which is being loaded from an external conf.json file.
 
-Now let's produce JSON object as a response in an HTTP server using a verticle:
+
+### Now let's produce JSON object as a response in an HTTP server using a verticle
+
 ```java
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
@@ -659,7 +661,47 @@ public class MyHttpServerJsonExample extends AbstractVerticle {
 }
 ```
 
+### now Retrieving parameters from HTTP Server
 
+```java
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+
+public class HttpServerQueryExample extends AbstractVerticle {
+
+	public static void main(String[] args) {
+		System.out.println("In Main HttpServerQueryExample - Deploying HttpServerQueryExample");
+		Vertx vertx = Vertx.vertx();
+		vertx.deployVerticle(new HttpServerQueryExample(), new DeploymentOptions().setInstances(1).setWorker(false));
+	}
+
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		System.out.println("In HttpServerQueryExample Start");
+		vertx.createHttpServer().requestHandler(req -> {
+			String name = req.getParam("name");
+			String message = "hello " + (name != null && !name.trim().isEmpty() ? name : "world") + "!";
+			JsonObject json = new JsonObject().put("message", message);
+			req.response().putHeader("Content-Type", "application/json; charset=UTF8").end(json.encodePrettily());
+		}).listen(8899);
+	}
+
+	@Override
+	public void stop(Promise<Void> stopPromise) throws Exception {
+		System.out.println("In HttpServerQueryExample Stop");
+	}
+}
+```
+to test this method, in the browser use the following url.
+
+```url
+http://127.0.0.1:8899/?name=Shan%20Konduru
+	
+```
+	
 ## RESTful WebService 
 
 Lets first design and Develop REST Services.
