@@ -1,20 +1,22 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>Vertx.Grp.01</groupId>
-	<artifactId>Vertx.Art.01</artifactId>
+	<groupId>Vertx.Demo</groupId>
+	<artifactId>Vertx.Demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Vertx.Sample</name>
-	<description>Vertx.Sample</description>
+	<name>VertxDemo</name>
+	<description>Vertx Demo</description>
 	<dependencies>
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-core</artifactId>
-			<version>4.3.7</version>
+			<version>3.9.1</version>
 		</dependency>
 		<dependency>
 			<groupId>io.vertx</groupId>
-			<artifactId>vertx-config</artifactId>
-			<version>4.3.7</version>
+			<artifactId>vertx-web</artifactId>
+			<version>3.9.1</version>
 		</dependency>
 	</dependencies>
 </project>
