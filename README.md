@@ -15,6 +15,50 @@ Similarly, Vert.x uses an event bus, to communicate with different parts of the 
 
 We call it polyglot due to its support for multiple JVM and non-JVM languages like Java, Groovy, Ruby, Python, and JavaScript.
 
+## true power of Polyglot
+
+# JavaScript
+```js
+load('vertx.js')
+vertx.createHttpServer().requestHandler(function(req) {
+  var file = req.path === '/' ? 'index.html' : req.path;
+  req.response.sendFile('webroot/' + file);
+}).listen(8080)
+```
+
+# Ruby
+```ruby
+require "vertx"
+Vertx::HttpServer.new.request_handler do |req|
+  file = req.uri == "/" ? "index.html" : req.uri
+  req.response.send_file "webroot/#{file}"
+end.listen(8080)
+```
+
+# Groovy
+```Groovy
+vertx.createHttpServer().requestHandler { req ->
+  def file = req.uri == "/" ? "index.html" : req.uri
+  req.response.sendFile "webroot/$file"
+}.listen(8080)
+```
+
+# Java
+```java
+import org.vertx.java.core.Handler;
+import org.vertx.java.core.http.HttpServerRequest;
+import org.vertx.java.deploy.Verticle;
+public class Server extends Verticle {
+  public void start() {
+    vertx.createHttpServer().requestHandler(new Handler() {
+      public void handle(HttpServerRequest req) {
+        String file = req.path.equals("/") ? "index.html" : req.path;
+        req.response.sendFile("webroot/" + file);
+      }
+    }).listen(8080);
+  }
+}
+```
 ## Setup
 To use Vert.x we need to add the following Maven dependency in pom.xml:
 ```xml
