@@ -18,6 +18,24 @@ We call it polyglot due to its support for multiple JVM and non-JVM languages li
 ```diff
 @@ Day #2 @@
 ```
+## Finding our reason for Deployment Failures
+```java
+	System.out.println("Deploying MyVerticle - Verticle Class Name!!!");
+	vertx.deployVerticle(MyVerticle.class.getName(), deploymentStatus -> {
+		if(deploymentStatus.
+		if (deploymentStatus.succeeded()) {
+    			System.out.println("deploymentStatus of the Verticle is Succeeded!");
+  		} else {
+    			System.out.println("deploymentStatus of the Verticle FAILED");
+    			deploymentStatus.cause().printStackTrace();
+  		}
+	});
+```
+
+
+```diff
+@@ Day #2 @@
+```
 ## Traditional vs Fluent way of Coding
 
 ```java
