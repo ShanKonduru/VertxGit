@@ -118,10 +118,10 @@ public class MyVerticle extends AbstractVerticle {
 ```
 The start() method will be invoked by the vertx instance when the verticle is deployed. The method takes io.vertx.core.Future as a parameter, which can be used to discover the status of an asynchronous deployment of the verticle.
 
-### Deployment of Vert.x Applications
+## Deployment of Vert.x Applications
 Now let's deploy the verticle: there are multiple ways to deploy a Verticle.
 
-#### 1. Deployment using Main method inside Verticle class
+## 1. Deployment using Main method inside Verticle class
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 import io.vertx.core.AbstractVerticle;
@@ -149,7 +149,7 @@ public class SecondVerticle extends AbstractVerticle {
 }
 ```
 
-#### 2. Deployment using Verticle Object
+## 2. Deployment using Verticle Object
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 import io.vertx.config.ConfigRetriever;
@@ -174,7 +174,7 @@ public class DeployMyVerticle {
 	}
 }
 ```
-#### 3. Deployment using fully qualified class path
+## 3. Deployment using fully qualified class path
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 import io.vertx.config.ConfigRetriever;
@@ -200,7 +200,7 @@ public class DeployMyVerticle {
 }
 ```
 
-#### 4. Deployment using class name
+## 4. Deployment using class name
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 import io.vertx.config.ConfigRetriever;
@@ -226,7 +226,7 @@ public class DeployMyVerticle {
 }
 ```
 
-#### 5. Deployment using Deployment Options
+## 5. Deployment using Deployment Options
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
 import io.vertx.config.ConfigRetriever;
@@ -256,9 +256,9 @@ public class DeployMyVerticle {
 }
 ```
 
-#### 6. Deployment using Bootstrap Verticle
+## 6. Deployment using Bootstrap Verticle
 
-##### Steps to follow
+## Steps to follow
 * Create a Verticle to be Deployed 
 * Create another Verticle called BootstrapVerticle 
 * Implement Necessary Deployment Code
@@ -413,7 +413,7 @@ In practical usage, publish is quite useful to inform that an event has occured,
 
 Conceptually, publish uses the publish/subscribe pattern whereas send uses the request/response pattern.
 
-### Steps to follow 
+## Steps to follow 
 * Create a Producer Verticle
 * Create a Consumer Verticle - call it Consumer One Verticle
 * Create Boot Strap Verticle
@@ -514,7 +514,7 @@ public class BootstrapProdConsVerticle extends AbstractVerticle {
 ```
 ## Timers  Handlers
 
-### Types of Timers 
+## Types of Timers 
 
 * Delayed Timers - One time execution
 * Recursive Timers - Periodic execution with intervals 
@@ -634,7 +634,7 @@ public class DeployVertcle {
 
 ## HTTP Server
 
-### Now let's spin up an HTTP server using a verticle:
+## Now let's spin up an HTTP server using a verticle:
 ```java
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
@@ -680,7 +680,7 @@ Finally, the server is bound to a port, and an AsyncResult<HttpServer> handler i
 Note that: config.getInteger() method, is reading the value for HTTP port configuration which is being loaded from an external conf.json file.
 
 
-### Now let's produce JSON object as a response in an HTTP server using a verticle
+## Now let's produce JSON object as a response in an HTTP server using a verticle
 
 ```java
 import io.vertx.core.AbstractVerticle;
@@ -718,7 +718,7 @@ public class MyHttpServerJsonExample extends AbstractVerticle {
 }
 ```
 
-### now Retrieving parameters from HTTP Server
+## now Retrieving parameters from HTTP Server
 
 ```java
 import io.vertx.core.AbstractVerticle;
@@ -763,7 +763,7 @@ http://127.0.0.1:8899/?name=Shan%20Konduru
 
 Lets first design and Develop REST Services.
 
-### Build a REST Service to get list of all products.
+## Build a REST Service to get list of all products.
 ```java
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServerResponse;
@@ -873,9 +873,9 @@ public class GetAllProducts  extends AbstractVerticle {
 }
 ```
 
-### Manually Test your REST Service
+## Manually Test your REST Service
 
-#### Manually Test GET List of Products
+## Manually Test GET List of Products
 After Running the REST Service program, launch web browser and tyoe the following URL.
 ```url
 http://localhost:8888/products
@@ -899,7 +899,7 @@ You would get the following output.
   "weight" : 80
 } ]
 ```
-#### Manually Test GET One Product by Product
+## Manually Test GET One Product by Product
 After testing get all products, lets try to get individual product details. 
 to get it use the following URLs.
 ```url
@@ -942,7 +942,7 @@ the output would be
 }
 ```
 
-#### To Add a New Product, you could  use postman
+## To Add a New Product, you could  use postman
 PUT
 ```url
 http://localhost:8888/products/prod888
