@@ -15,6 +15,9 @@ Similarly, Vert.x uses an event bus, to communicate with different parts of the 
 
 We call it polyglot due to its support for multiple JVM and non-JVM languages like Java, Groovy, Ruby, Python, and JavaScript.
 
+```diff
+@@ Day #2 @@
+```
 ## Traditional vs Fluent way of Coding
 
 ```java
@@ -28,6 +31,9 @@ We call it polyglot due to its support for multiple JVM and non-JVM languages li
 		DeploymentOptions deploymentOption = new DeploymentOptions().setInstances(3).setWorker(true);
 ```
 
+```diff
+@@ Day #2 @@
+```
 ## true power of Polyglot
 
 # JavaScript
@@ -226,6 +232,9 @@ public class DeployMyVerticle {
 }
 ```
 
+```diff
+@@ Day #2 @@
+```
 ## 5. Deployment using Deployment Options
 <code> <b><i>NOTE:</i></b><b>References to interface static methods are allowed only at source level 1.8 or above</b> </code>
 ```java
@@ -310,7 +319,9 @@ public class BootstrapVerticle extends AbstractVerticle {
 * provide  io.vertx.core.Launcher under main class
 * under arguments add run BootstrapVerticle
 
-
+```diff
+@@ Day #2 @@
+```
 ## Read Data from Configuration files
 
 **Add necessary dependencies to pom.xml**
@@ -389,7 +400,9 @@ public class DeployMyVerticle {
 	}
 }
 ```
-
+```diff
+@@ Day #2 @@
+```
 ## Event Bus
 It is the nerve system of any Vert.x application.
 
@@ -512,6 +525,10 @@ public class BootstrapProdConsVerticle extends AbstractVerticle {
 **Configure Bootstrap in Run Configuration**
 ```java
 ```
+
+```diff
+@@ Day #2 @@
+```
 ## Timers  Handlers
 
 ## Types of Timers 
@@ -549,6 +566,10 @@ public class HeatSensorVerticle extends AbstractVerticle {
 	}
 }
 ```
+
+```diff
+@@ Day #2 @@
+```
 **Recursive Timers - Periodic execution with intervals**
 ```java
 import java.util.Random;
@@ -577,6 +598,10 @@ public class HeatSensorVerticle extends AbstractVerticle {
 	}
 }
 
+```
+
+```diff
+@@ Day #2 @@
 ```
 ## Logging
 
@@ -631,7 +656,9 @@ public class DeployVertcle {
 	}
 }
 ```
-
+```diff
+@@ Day #2 @@
+```
 ## HTTP Server
 
 ## Now let's spin up an HTTP server using a verticle:
@@ -758,7 +785,10 @@ to test this method, in the browser use the following url.
 http://127.0.0.1:8899/?name=Shan%20Konduru
 	
 ```
-	
+
+```diff
+@@ Day #2 @@
+```
 ## RESTful WebService 
 
 Lets first design and Develop REST Services.
