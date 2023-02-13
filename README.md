@@ -15,6 +15,19 @@ Similarly, Vert.x uses an event bus, to communicate with different parts of the 
 
 We call it polyglot due to its support for multiple JVM and non-JVM languages like Java, Groovy, Ruby, Python, and JavaScript.
 
+## Traditional vs Fluent way of Coding
+
+```java
+		// Traditional Way
+		DeploymentOptions deploymentOptions = new DeploymentOptions();
+		deploymentOptions.setInstances(3);
+		deploymentOptions.setWorker(true);
+```
+```java
+		// fluent Way
+		DeploymentOptions deploymentOption = new DeploymentOptions().setInstances(3).setWorker(true);
+```
+
 ## true power of Polyglot
 
 # JavaScript
