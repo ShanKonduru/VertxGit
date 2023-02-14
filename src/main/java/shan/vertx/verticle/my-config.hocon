@@ -1,0 +1,5 @@
+{
+	"DefaultNumberOfInstances" : 1,
+	"DefaultEnableWorker" : false,
+	"VerticlesToDeploy" : "vertx.session.day2.SecondVerticle, vertx.session.day2.ThirdVerticle, vertx.session.day2.FourthVerticle, vertx.session.day2.FifthVerticle"
+}
