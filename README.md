@@ -683,6 +683,11 @@ add the following entry to pom.xml
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.36</version>
 		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.0</version>
+		</dependency>
 ```
 ```java
 package vertx.session.day2;
