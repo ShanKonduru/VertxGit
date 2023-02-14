@@ -22,7 +22,6 @@ We call it polyglot due to its support for multiple JVM and non-JVM languages li
 ```java
 	System.out.println("Deploying MyVerticle - Verticle Class Name!!!");
 	vertx.deployVerticle(MyVerticle.class.getName(), deploymentStatus -> {
-		if(deploymentStatus.
 		if (deploymentStatus.succeeded()) {
     			System.out.println("deploymentStatus of the Verticle is Succeeded!");
   		} else {
