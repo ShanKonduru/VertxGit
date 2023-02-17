@@ -1082,3 +1082,70 @@ the output would be
   "weight" : 100
 }
 ```
+#unit Testing a Verticle using Junit.
+
+```xml
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<vertx.version>4.3.8</vertx.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-core</artifactId>
+			<version>${vertx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-web</artifactId>
+			<version>${vertx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-unit</artifactId>
+			<version>${vertx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.7.0</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+```
+
+unit test class
+```java
+package vertx.session.day3;
+
+import io.vertx.core.Vertx;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import io.vertx.ext.unit.TestContext;
+import io.vertx.ext.unit.junit.VertxUnitRunner;
+
+@RunWith(VertxUnitRunner.class)
+public class MyVerticleTest {
+	Vertx vertx;
+
+	@Test
+	public void testVerticle(TestContext context) {
+		vertx = Vertx.vertx();
+		vertx.deployVerticle(new MyVerticle(), succeeded -> {
+			boolean status = succeeded.succeeded();
+			assertEquals(true, status);
+		});
+	}
+}
+```
